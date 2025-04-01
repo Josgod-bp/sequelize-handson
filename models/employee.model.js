@@ -17,6 +17,10 @@ const Employee = sequelize.define('Employee', {
   },
   salary: {
     type: DataTypes.FLOAT
+  },
+  deleted: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
   }
 });
 

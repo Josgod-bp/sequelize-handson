@@ -14,7 +14,8 @@ exports.create = async (req, res) => {
 exports.findAll = async (req, res) => {
   try {
     const employees = await Employee.findAll({
-      include: [Department, Role]
+      include: [Department, Role],
+      where: { deleted: false }
     });
     res.json(employees);
   } catch (err) {
@@ -51,11 +52,22 @@ exports.update = async (req, res) => {
 
 // DELETE
 exports.delete = async (req, res) => {
+  // try {
+  //   const deleted = await Employee.destroy({
+  //     where: { id: req.params.id }
+  //   });
+  //   deleted
+  //     ? res.json({ message: 'Employee deleted' })
+  //     : res.status(404).json({ error: 'Not found' });
+  // } catch (err) {
+  //   res.status(500).json({ error: err.message });
+  // }
+
   try {
-    const deleted = await Employee.destroy({
+    const [updated] = await Employee.update(req.body, {
       where: { id: req.params.id }
     });
-    deleted
+    updated
       ? res.json({ message: 'Employee deleted' })
       : res.status(404).json({ error: 'Not found' });
   } catch (err) {
